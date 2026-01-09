@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gao-ri's Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* === 전체 공통 스타일 === */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Noto Sans KR', sans-serif; 
+            line-height: 1.6; 
+            color: #fff; 
+            overflow-x: hidden; 
+        }
+        a { text-decoration: none; color: inherit; transition: color 0.3s; }
+        ul { list-style: none; }
+
+        /* === 배경 (별 효과) === */
+        #particles-js {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #000000; 
+            z-index: -1; 
+        }
+
+        /* === 상단 메뉴바 (흰색 글씨) === */
+        nav {
+            position: fixed; top: 0; width: 100%; height: 70px;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 50px;
+            background: rgba(0, 0, 0, 0.5); /* 반투명 검정 배경 */
+            backdrop-filter: blur(5px); /* 배경 흐림 효과 */
+            z-index: 1000;
+        }
+        nav .logo { font-size: 1.5rem; font-weight: bold; letter-spacing: 2px; }
+        nav ul { display: flex; gap: 30px; }
+        nav ul li a { font-size: 1rem; font-weight: 500; }
+        nav ul li a:hover { color: #00d2ff; /* 마우스 올리면 형광 하늘색 */ }
+
+        /* === 메인 화면 === */
+        .section {
+            min-height: 100vh;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; padding: 20px;
+        }
+        
+        /* 메인 타이틀 */
+        .hero h1 { 
+            font-size: 4rem; margin-bottom: 20px; 
+            text-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+        .hero p { font-size: 1.5rem; color: #ccc; margin-bottom: 40px; }
+        .btn {
+            padding: 15px 40px; border: 2px solid #fff; color: #fff;
+            font-size: 1.1rem; border-radius: 30px;
+            transition: 0.3s;
+        }
+        .btn:hover { background: #fff; color: #000; }
+
+        /* 모바일 대응 */
+        @media (max-width: 768px) {
+            nav { padding: 0 20px; }
+            .hero h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="particles-js"></div>
+
+    <nav>
+        <div class="logo">Gao-ri</div>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Project</a></li>
+        </ul>
+    </nav>
+
+    <div id="home" class="section hero">
+        <h1>안녕하세요<br>개발자 Gao-ri 입니다</h1>
+        <p>밤하늘의 별처럼 빛나는 아이디어를 코드로 실현합니다.</p>
+        <a href="#about" class="btn">더 알아보기</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#ffffff" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5, "random": true, "anim": { "enable": true, "speed": 1, "opacity_min": 0.1 } },
+                "size": { "value": 3, "random": true },
+                "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.2, "width": 1 },
+                "move": { "enable": true, "speed": 2 }
+            },
+            "interactivity": { "events": { "onhover": { "enable": true, "mode": "grab" } } }
+        });
+    </script>
+</body>
+</html>

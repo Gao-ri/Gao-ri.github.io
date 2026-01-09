@@ -4,19 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gao-ri's Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* === 전체 공통 스타일 === */
+        /* === 전체 설정 === */
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; /* 부드러운 스크롤 */ }
         body { 
             font-family: 'Noto Sans KR', sans-serif; 
             line-height: 1.6; 
             color: #fff; 
+            background-color: #000;
             overflow-x: hidden; 
         }
-        a { text-decoration: none; color: inherit; transition: color 0.3s; }
         ul { list-style: none; }
+        a { text-decoration: none; color: inherit; }
 
         /* === 배경 (별 효과) === */
         #particles-js {
@@ -25,44 +27,89 @@
             z-index: -1; 
         }
 
-        /* === 상단 메뉴바 (흰색 글씨) === */
+        /* === 네비게이션 === */
         nav {
             position: fixed; top: 0; width: 100%; height: 70px;
             display: flex; justify-content: space-between; align-items: center;
             padding: 0 50px;
-            background: rgba(0, 0, 0, 0.5); /* 반투명 검정 배경 */
-            backdrop-filter: blur(5px); /* 배경 흐림 효과 */
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
             z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        nav .logo { font-size: 1.5rem; font-weight: bold; letter-spacing: 2px; }
+        nav .logo { font-size: 1.5rem; font-weight: bold; }
         nav ul { display: flex; gap: 30px; }
-        nav ul li a { font-size: 1rem; font-weight: 500; }
-        nav ul li a:hover { color: #00d2ff; /* 마우스 올리면 형광 하늘색 */ }
+        nav ul li a:hover { color: #00d2ff; }
 
-        /* === 메인 화면 === */
-        .section {
-            min-height: 100vh;
+        /* === 공통 섹션 스타일 === */
+        section {
+            min-height: 100vh; /* 한 화면 꽉 차게 */
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; padding: 20px;
+            padding: 80px 20px;
+            position: relative;
         }
         
-        /* 메인 타이틀 */
-        .hero h1 { 
-            font-size: 4rem; margin-bottom: 20px; 
-            text-shadow: 0 0 20px rgba(255,255,255,0.3);
+        /* 반투명 유리 카드 디자인 */
+        .glass-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 1000px;
+            width: 90%;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
         }
-        .hero p { font-size: 1.5rem; color: #ccc; margin-bottom: 40px; }
-        .btn {
-            padding: 15px 40px; border: 2px solid #fff; color: #fff;
-            font-size: 1.1rem; border-radius: 30px;
-            transition: 0.3s;
+
+        h2 { font-size: 2.5rem; margin-bottom: 30px; color: #00d2ff; text-align: center; }
+        h3 { font-size: 1.5rem; margin-bottom: 15px; color: #fff; border-left: 4px solid #00d2ff; padding-left: 10px; }
+        p { margin-bottom: 15px; color: #ddd; }
+
+        /* === 1. 홈 (HERO) === */
+        #home h1 { font-size: 4rem; text-align: center; margin-bottom: 20px; text-shadow: 0 0 20px rgba(0, 210, 255, 0.5); }
+        #home p { font-size: 1.5rem; color: #aaa; }
+
+        /* 화살표 애니메이션 */
+        .scroll-down {
+            position: absolute; bottom: 50px; left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            cursor: pointer;
+            opacity: 0.8;
         }
-        .btn:hover { background: #fff; color: #000; }
+        .scroll-down span {
+            display: block; width: 30px; height: 30px;
+            border-bottom: 3px solid #fff;
+            border-right: 3px solid #fff;
+            transform: rotate(45deg);
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0);}
+            40% {transform: translateX(-50%) translateY(-20px);}
+            60% {transform: translateX(-50%) translateY(-10px);}
+        }
+
+        /* === 2. 프로필 (기술스택) === */
+        .skill-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+        .skill-tag { 
+            background: rgba(0, 210, 255, 0.2); 
+            padding: 8px 15px; border-radius: 20px; 
+            font-size: 0.9rem; border: 1px solid #00d2ff;
+        }
+
+        /* === 3. 프로젝트 === */
+        .project-item { margin-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 30px; }
+        .project-item:last-child { border: none; }
+        .project-meta { font-size: 0.9rem; color: #aaa; margin-bottom: 10px; }
+
+        /* === 4. 비전 === */
+        .vision-text { text-align: center; font-size: 1.2rem; line-height: 2; }
 
         /* 모바일 대응 */
         @media (max-width: 768px) {
+            #home h1 { font-size: 2.5rem; }
             nav { padding: 0 20px; }
-            .hero h1 { font-size: 2.5rem; }
+            section { padding: 60px 15px; }
         }
     </style>
 </head>
@@ -73,31 +120,102 @@
     <nav>
         <div class="logo">Gao-ri</div>
         <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#projects">Project</a></li>
+            <li><a href="#profile">Profile</a></li>
+            <li><a href="#projects">Projects</a></li>
         </ul>
     </nav>
 
-    <div id="home" class="section hero">
-        <h1>안녕하세요<br>개발자 Gao-ri 입니다</h1>
-        <p>밤하늘의 별처럼 빛나는 아이디어를 코드로 실현합니다.</p>
-        <a href="#about" class="btn">더 알아보기</a>
-    </div>
+    <section id="home">
+        <h1>Developer<br>Gao-ri</h1>
+        <p>사용자의 가치를 만드는 개발자</p>
+        
+        <a href="#profile" class="scroll-down">
+            <span></span>
+        </a>
+    </section>
+
+    <section id="profile">
+        <div class="glass-box">
+            <h2>Profile</h2>
+            <div style="margin-bottom: 40px;">
+                <h3>About Me</h3>
+                <p>안녕하세요, 백엔드와 프론트엔드를 아우르는 풀스택 개발자를 지향합니다. 효율적인 코드와 사용자 친화적인 서비스를 만드는 데 열정이 있습니다.</p>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3>Skills</h3>
+                <div class="skill-list">
+                    <span class="skill-tag">Java</span>
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">Spring Boot</span>
+                    <span class="skill-tag">React</span>
+                    <span class="skill-tag">FastAPI</span>
+                    <span class="skill-tag">Docker</span>
+                    <span class="skill-tag">AWS</span>
+                    <span class="skill-tag">Oracle</span>
+                </div>
+            </div>
+
+            <div>
+                <h3>Experience</h3>
+                <p><strong>프리랜서 / 개인 프로젝트 개발</strong> (2024 - 현재)</p>
+                <p>다양한 웹 애플리케이션 설계 및 구현 경험</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <div class="glass-box">
+            <h2>Projects</h2>
+            
+            <div class="project-item">
+                <h3>🥘 레시피 공유 및 식단 관리 플랫폼</h3>
+                <p class="project-meta">Full Stack Developer | React, Spring Boot, Oracle, AWS</p>
+                
+                <p><strong>[개요]</strong> 사용자가 레시피를 공유하고, 영양소 분석을 통해 건강한 식단을 관리할 수 있는 웹 서비스입니다.</p>
+                
+                <p><strong>[주요 기능]</strong></p>
+                <ul>
+                    <li>• 레시피 공유 및 영양소(칼로리, 탄단지) 자동 분석</li>
+                    <li>• 사용자 맞춤형 알림, 알레르기 필터링, 식BTI 분석</li>
+                    <li>• 'MY 냉장고' 기능을 통한 식재료 관리 및 직거래 장터 연동</li>
+                </ul>
+
+                <p><strong>[문제 해결]</strong></p>
+                <p>남는 식재료 처리 문제를 해결하기 위해 직거래 장터 기능을 도입하여 자원 낭비를 줄이는 에코 시스템을 구축했습니다.</p>
+            </div>
+
+            </div>
+    </section>
+
+    <section id="vision">
+        <div class="glass-box" style="text-align: center;">
+            <h2>Vision</h2>
+            <div class="vision-text">
+                <p>"기술을 넘어 가치를 전달하는 개발자가 되겠습니다."</p>
+                <br>
+                <p>단순히 코드를 작성하는 것을 넘어,</p>
+                <p>사용자가 겪는 불편함을 기술적으로 해결하고</p>
+                <p>지속 가능한 소프트웨어 생태계를 만드는 것이 저의 목표입니다.</p>
+                <br>
+                <p>끊임없이 배우고 소통하며 성장하겠습니다.</p>
+            </div>
+        </div>
+    </section>
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
         particlesJS("particles-js", {
             "particles": {
-                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                "number": { "value": 100, "density": { "enable": true, "value_area": 800 } },
                 "color": { "value": "#ffffff" },
                 "shape": { "type": "circle" },
                 "opacity": { "value": 0.5, "random": true, "anim": { "enable": true, "speed": 1, "opacity_min": 0.1 } },
                 "size": { "value": 3, "random": true },
-                "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.2, "width": 1 },
-                "move": { "enable": true, "speed": 2 }
+                "line_linked": { "enable": false }, /* 선 연결 끔 (더 깔끔하게) */
+                "move": { "enable": true, "speed": 1, "direction": "none", "out_mode": "out" }
             },
-            "interactivity": { "events": { "onhover": { "enable": true, "mode": "grab" } } }
+            "interactivity": { "events": { "onhover": { "enable": false } } }
         });
     </script>
 </body>

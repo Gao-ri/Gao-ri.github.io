@@ -4,13 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gao-ri's Portfolio</title>
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⭐</text></svg>">
+
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
     
     <style>
         /* === 전체 설정 === */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; /* 기본 마우스 숨김 (커스텀 커서 사용) */ }
         html { scroll-behavior: smooth; }
         body { 
             font-family: 'Noto Sans KR', sans-serif; 
@@ -18,10 +21,40 @@
             color: #fff; 
             background-color: #000;
             overflow-x: hidden; 
-            word-break: keep-all; /* 한국어 줄바꿈 최적화 */
+            word-break: keep-all;
         }
         ul { list-style: none; }
         a { text-decoration: none; color: inherit; }
+
+        /* === 2. 커스텀 마우스 커서 스타일 === */
+        .cursor-dot,
+        .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none; /* 마우스 클릭 통과 */
+        }
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #00d2ff;
+        }
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(0, 210, 255, 0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+        /* 링크나 버튼 위에 올렸을 때 반응 */
+        body.hovering .cursor-outline {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(0, 210, 255, 0.1);
+            border-color: #00d2ff;
+        }
 
         /* === 배경 (별 효과) === */
         #particles-js {
@@ -42,7 +75,7 @@
             width: 50px; height: 50px; border-radius: 50%;
             background: rgba(0, 0, 0, 0.6); color: #fff;
             display: flex; justify-content: center; align-items: center;
-            font-size: 0.7rem; font-weight: bold; cursor: pointer;
+            font-size: 0.7rem; font-weight: bold; 
             border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s;
         }
         .remote-btn:hover { background: #00d2ff; color: #000; transform: scale(1.1); }
@@ -68,7 +101,7 @@
         #home p { font-size: 1.5rem; color: #aaa; text-align: center; }
         .scroll-down {
             position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%);
-            animation: bounce 2s infinite; cursor: pointer; opacity: 0.8;
+            animation: bounce 2s infinite; opacity: 0.8;
         }
         .scroll-down span {
             display: block; width: 30px; height: 30px; border-bottom: 3px solid #fff; border-right: 3px solid #fff; transform: rotate(45deg);
@@ -83,137 +116,84 @@
         .profile-img {
             width: 180px; height: 180px; border-radius: 50%; object-fit: cover;
             border: 4px solid #00d2ff; margin-bottom: 20px;
-            background: #333; 
+            background: #333; transition: transform 0.3s;
         }
+        .profile-img:hover { transform: scale(1.05); border-color: #fff; } /* 사진 줌 효과 */
+
         .info-list li { margin-bottom: 15px; font-size: 0.95rem; color: #ddd; display: flex; align-items: center; gap: 10px; justify-content: flex-start; }
         .info-list i { width: 20px; color: #00d2ff; text-align: center; }
 
-        /* === 3. Skills (NEW: 아이콘 카드 스타일) === */
-        .skill-grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 반응형 그리드 */
-            gap: 30px;
-        }
+        /* === 3. Skills (줌 효과 추가) === */
+        .skill-grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .skill-category-box { background: rgba(0, 0, 0, 0.3); border-radius: 15px; padding: 20px; border: 1px solid rgba(255,255,255,0.1); transition: transform 0.3s; }
+        .skill-category-box:hover { transform: translateY(-5px); border-color: rgba(0, 210, 255, 0.3); } /* 박스 전체 호버 */
         
-        .skill-category-box {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
-            padding: 20px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .skill-category-box h4 {
-            text-align: center; color: #aaa; margin-bottom: 20px; font-size: 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;
-        }
-
-        .skill-icons {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 한 줄에 3개씩 */
-            gap: 15px;
-        }
+        .skill-category-box h4 { text-align: center; color: #aaa; margin-bottom: 20px; font-size: 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+        .skill-icons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
 
         .skill-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 10px;
-            border-radius: 10px;
-            transition: 0.3s;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 8px; padding: 10px; border-radius: 10px; transition: all 0.3s ease; /* 부드러운 전환 */
         }
+        /* ★ 스킬 카드 줌 효과 ★ */
         .skill-card:hover {
             background: rgba(255,255,255,0.1);
-            transform: translateY(-5px);
+            transform: scale(1.1); /* 1.1배 확대 */
+            z-index: 10;
         }
-        .skill-card i {
-            font-size: 3rem; /* 아이콘 크기 */
-            margin-bottom: 5px;
-        }
-        /* Devicon 컬러 적용을 위한 클래스 */
+        .skill-card i { font-size: 3rem; margin-bottom: 5px; }
         .colored { color: inherit; } 
         .skill-card span { font-size: 0.8rem; color: #ccc; }
 
-
-        /* === 4. 교육 및 자격증 (NEW: 타임라인 스타일) === */
-        .timeline {
-            position: relative;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        /* 중앙 선 */
+        /* === 4. 교육 및 자격증 (타임라인 줌 효과) === */
+        .timeline { position: relative; max-width: 800px; margin: 0 auto; }
         .timeline::after {
-            content: '';
-            position: absolute;
-            width: 4px;
-            background: linear-gradient(to bottom, #00d2ff, #00d2ff 30%, #fff);
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            margin-left: -2px;
-            border-radius: 2px;
+            content: ''; position: absolute; width: 4px; background: linear-gradient(to bottom, #00d2ff, #00d2ff 30%, #fff);
+            top: 0; bottom: 0; left: 50%; margin-left: -2px; border-radius: 2px;
         }
-        
-        .timeline-item {
-            padding: 10px 40px;
-            position: relative;
-            background-color: inherit;
-            width: 50%;
-            box-sizing: border-box;
-        }
-        
-        /* 왼쪽 오른쪽 배치 */
+        .timeline-item { padding: 10px 40px; position: relative; background-color: inherit; width: 50%; box-sizing: border-box; }
         .left { left: 0; text-align: right; }
         .right { left: 50%; text-align: left; }
-
-        /* 타임라인 점 */
         .timeline-item::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            right: -10px;
-            background-color: #000;
-            border: 4px solid #00d2ff;
-            top: 15px;
-            border-radius: 50%;
-            z-index: 1;
-            box-shadow: 0 0 10px #00d2ff;
+            content: ''; position: absolute; width: 20px; height: 20px; right: -10px; background-color: #000;
+            border: 4px solid #00d2ff; top: 15px; border-radius: 50%; z-index: 1; box-shadow: 0 0 10px #00d2ff;
         }
         .right::after { left: -10px; }
 
-        /* 내용 박스 */
         .content-box {
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.1);
-            position: relative;
-            transition: 0.3s;
+            padding: 20px; background: rgba(255, 255, 255, 0.08); border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1); position: relative;
+            transition: transform 0.3s ease, background 0.3s; /* 줌 효과 애니메이션 */
         }
-        .content-box:hover { transform: scale(1.02); background: rgba(255,255,255,0.12); }
+        /* ★ 타임라인 박스 줌 효과 ★ */
+        .content-box:hover { 
+            transform: scale(1.05); /* 1.05배 확대 */
+            background: rgba(255,255,255,0.15); 
+            border-color: #00d2ff;
+        }
         .content-box h4 { margin-bottom: 5px; font-size: 1.1rem; color: #fff; }
         .content-box p { font-size: 0.9rem; color: #aaa; margin: 0; }
         .date-badge {
-            display: inline-block;
-            background: #00d2ff;
-            color: #000;
-            padding: 3px 10px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            margin-bottom: 10px;
+            display: inline-block; background: #00d2ff; color: #000; padding: 3px 10px;
+            border-radius: 15px; font-size: 0.8rem; font-weight: bold; margin-bottom: 10px;
         }
 
-        /* === 5. 프로젝트 === */
-        .project-item { margin-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 30px; }
+        /* === 5. 프로젝트 (줌 효과) === */
+        .project-item { 
+            margin-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 30px; 
+            transition: transform 0.3s ease; 
+            padding: 20px; border-radius: 10px;
+        }
+        /* ★ 프로젝트 항목 줌 효과 ★ */
+        .project-item:hover {
+            transform: scale(1.02);
+            background: rgba(255,255,255,0.03);
+        }
         .project-item:last-child { border: none; }
         .project-meta { font-size: 0.9rem; color: #aaa; margin-bottom: 10px; }
 
         /* === 6. 푸터 === */
-        footer {
-            background: #111; padding: 40px 20px; text-align: center; color: #666;
-            border-top: 1px solid #222; position: relative;
-        }
+        footer { background: #111; padding: 40px 20px; text-align: center; color: #666; border-top: 1px solid #222; }
         .footer-btn-top {
             display: inline-block; margin-top: 20px; padding: 10px 30px;
             border: 1px solid #333; border-radius: 20px; color: #aaa; transition: 0.3s;
@@ -222,11 +202,12 @@
 
         /* 모바일 대응 */
         @media (max-width: 768px) {
+            * { cursor: auto; } /* 모바일은 터치이므로 커스텀 커서 해제 */
+            .cursor-dot, .cursor-outline { display: none; } /* 커서 숨김 */
+            
             .profile-container { flex-direction: column; }
             .profile-left { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; padding-right: 0; }
             .remote-control { display: none; } 
-            
-            /* 타임라인 모바일 (한 줄로 변경) */
             .timeline::after { left: 31px; }
             .timeline-item { width: 100%; padding-left: 70px; padding-right: 25px; }
             .timeline-item::after { left: 21px; }
@@ -236,6 +217,9 @@
     </style>
 </head>
 <body>
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
 
     <div id="particles-js"></div>
 
@@ -287,9 +271,7 @@
     <section id="skills">
         <div class="glass-box">
             <h2>Skills</h2>
-            
             <div class="skill-grid-container">
-                
                 <div class="skill-category-box">
                     <h4>Frontend</h4>
                     <div class="skill-icons">
@@ -300,7 +282,6 @@
                         <div class="skill-card"><i class="devicon-typescript-plain colored"></i><span>TS</span></div>
                     </div>
                 </div>
-
                 <div class="skill-category-box">
                     <h4>Backend</h4>
                     <div class="skill-icons">
@@ -312,7 +293,6 @@
                         <div class="skill-card"><i class="devicon-mybatis-plain colored"></i><span>MyBatis</span></div>
                     </div>
                 </div>
-
                 <div class="skill-category-box">
                     <h4>DevOps / Tools</h4>
                     <div class="skill-icons">
@@ -324,7 +304,6 @@
                         <div class="skill-card"><i class="devicon-figma-plain colored"></i><span>Figma</span></div>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
@@ -332,9 +311,7 @@
     <section id="edu">
         <div class="glass-box">
             <h2>Education & Certs</h2>
-            
             <div class="timeline">
-                
                 <div class="timeline-item left">
                     <div class="content-box">
                         <span class="date-badge">2025.09</span>
@@ -342,7 +319,6 @@
                         <p>한국산업인력공단 | 필기합격</p>
                     </div>
                 </div>
-
                 <div class="timeline-item right">
                     <div class="content-box">
                         <span class="date-badge">2025.04 ~ 2025.09</span>
@@ -350,7 +326,6 @@
                         <p>KH정보교육원 강남지원 | 수료</p>
                     </div>
                 </div>
-
                 <div class="timeline-item left">
                     <div class="content-box">
                         <span class="date-badge">2025.06</span>
@@ -358,7 +333,6 @@
                         <p>한국데이터산업진흥원 | 취득</p>
                     </div>
                 </div>
-
                 <div class="timeline-item right">
                     <div class="content-box">
                         <span class="date-badge">2025.05</span>
@@ -366,7 +340,6 @@
                         <p>KH정보교육원 강남지원 | 수료</p>
                     </div>
                 </div>
-
                 <div class="timeline-item left">
                     <div class="content-box">
                         <span class="date-badge">2018.02</span>
@@ -374,7 +347,6 @@
                         <p>경기남부지방경찰청 | 최종합격</p>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
@@ -429,6 +401,32 @@
                 "line_linked": { "enable": false },
                 "move": { "enable": true, "speed": 1 }
             }
+        });
+
+        const cursorDot = document.querySelector(".cursor-dot");
+        const cursorOutline = document.querySelector(".cursor-outline");
+
+        window.addEventListener("mousemove", function(e) {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+
+        const links = document.querySelectorAll("a, .skill-card, .content-box, .remote-btn, .project-item");
+        links.forEach(link => {
+            link.addEventListener("mouseenter", () => {
+                document.body.classList.add("hovering");
+            });
+            link.addEventListener("mouseleave", () => {
+                document.body.classList.remove("hovering");
+            });
         });
     </script>
 </body>
